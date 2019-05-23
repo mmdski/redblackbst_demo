@@ -222,22 +222,22 @@ tree_delete_min (TreeNode *node)
 static TreeNode *
 tree_delete (TreeNode *node, KeyCompareFunc compare_func, void *key)
 {
-    assert (tree_get (node, key, compare_func) != NULL);
+    assert (tree_get (node, compare_func, key) != NULL);
 
-    if (key < node->key) {
+    if (compare_func(key, node->key) < 0) {
         if (!tree_is_red (node->l) && !tree_is_red (node->l->l))
             node = tree_move_red_left (node);
         node->l = tree_delete (node->l, compare_func, key);
     } else {
         if (tree_is_red (node->l))
             node = tree_rotate_right (node);
-        if (key == node->key && node->r == NULL) {
+        if (compare_func(key, node->key) == 0 && node->r == NULL) {
             tree_node_free (node);
             return NULL;
         }
         if (!tree_is_red (node->r) && !tree_is_red (node->r->l))
             node = tree_move_red_right (node);
-        if (key == node->key) {
+        if (compare_func(key, node->key) == 0) {
             TreeNode *min_r = tree_min (node->r);
             node->key       = min_r->key;
             node->value     = min_r->value;
