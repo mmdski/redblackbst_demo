@@ -6,5 +6,5 @@ cc = meson.get_compiler('c')
 
 subdir('cii')
 
-demo_sources = ['redblackbst.c', 'demo.c']
+demo_sources = ['redblackbst.c', 'chartable.c', 'demo.c']
 demo = executable('demo', demo_sources, link_with : ciilib)
